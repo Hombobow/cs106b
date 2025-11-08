@@ -1,0 +1,93 @@
+Before submitting this file, make sure that there are no more TODO
+placeholders remaining in the file (and remove this comment too).
+
+Perfect Numbers
+---------------
+
+Before submitting this file, make sure that there are no more TODO
+placeholders remaining in the file (and remove this comment too).
+
+Q1. Roughly how long did it take your computer to do the search? How many perfect numbers were found and what were they?
+A1. 
+
+It took 1.08 seconds for my computer to do the search. There were 4 perfect numbers between 1 and 40000. They were 6, 28, 496, and 8128.
+ 
+Q2. Make a table of the timing results for `findPerfects` that you observed. (old-school table of text rows and columns is just fine)
+A2. 
+
+size, seconds
+40000, 0.851
+80000, 3.313
+160000, 13.010
+320000, 53.337
+
+Q3. Does it take the same amount of work to compute `isPerfect` on the number 10 as it does on the number 1000? Why or why not? Does it take the same amount of work for `findPerfects` to search the range of numbers from 1-1000 as it does to search the numbers from 1000-2000? Why or why not?
+A3. 
+
+It does not take the same amount of work to compute 'isPerfect' on the number 10 and 1000. This is because isPerfect calls the 'divisorSum' function which iterates through every divisor between 0 and the given number. However because both 10 and 1000 are such insignificant numbers the time needed to run isPerfect on both of them is still roughly 0 seconds.
+
+It does not take the same amount of work for 'findPerfects' to search 1-1000 as it takes to search 1000-2000 because 'findPerfects' calls the 'isPerfect' function which calls the 'divisorSum' function which would have to iterate through a larger numbers of divisors for the numbers from 1000-2000.
+
+Q4. Extrapolate from the data you gathered and make a prediction: how long will it take `findPerfects` to reach the fifth perfect number?
+A4. 
+
+Using the points (0, 0), (40000, 0.851), (80000, 3.13), (160000, 13.010), and (320000, 53.337), I can form a line of best fit on desmos. To extrapolate the amount of time it would take to find the 5th perfect number (33550336) it would take 585457.547 seconds to compute.
+
+Q5. Do any of the tests still pass even with this broken function? Why or why not?
+A5. 
+
+Only 2 of 6 tests passed with the broken function. This is because adding 1 to the total makes all the perfect numbers imperfect as now their divisors +1 is not equal to themselves.
+
+Q6. Explain your testing strategy for `smarterSum` and how you chose your specific test cases that lead you to be confident the function is working correctly.
+A6. 
+
+Take a moment to carefully think about why this is true and how you would rearrange the code to capitalize on this observation: searching up to the sqrt(n) is a good idea because every divisor after the square root is going to be pairwise factor with divisor before the square root meaning you can just add that divisor while you are iterating over the value before the square root.
+
+My specific test case show that both functions results in 0 when I pass in a negative number, both functions result in a 0 when I pass 1 (it doesn't double count 1), it doesn't double count a perfect square eg. 225, and that even for large numbers my function still computes the correct sum eg. 320000 & 8589869056. 
+
+
+Q7. Record your timing results for `findPerfectsSmarter` into a table.
+A7. 
+
+size, seconds
+1280000, 1.999
+2560000, 5.519
+5120000, 15.200
+10240000, 42.866
+
+
+Q8. Make a prediction: how long will `findPerfectsSmarter` take to reach the fifth perfect number?
+A8. 
+
+Using the points (0, 0), (1280000, 1.999), (2560000, 5.519), (5120000, 15.200), and (10240000, 42.866), I can form a line of best fit on desmos. To extrapolate the amount of time it would take to find the 5th perfect number (33550336) it would take 473.433 seconds to compute vs the original 585457.547 seconds.
+
+
+Q9. Explain how you chose your specific test cases and why they lead you to be confident `findNthPerfectEuclid` is working correctly.
+A9. 
+
+My test cases encapsulate a smaller value of 1 and a larger value 6 to see if the 'findNthPerfectEuclid' function does in fact return the nth perfect number. I also go on to check with the 'isPerfectSmarter' function to see if the function does in fact agree that both numbers found were perfect.
+
+Soundex
+-------
+
+Q10. What is the Soundex code for "Angelou"? What is the code for your own surname?
+A10. 
+
+The Soundex code for Angelou is A524
+The Soundex code for my surname Law is L000
+
+Q11. Before writing any code, brainstorm your plan of attack and sketch how you might decompose the work into smaller tasks. Briefly describe your decomposition strategy. 
+A11. 
+
+My plan is to split every single functionality from 1-6 into separate functions that alter a variable that you input. These functions will have the ability to discard non-letters, encode letters as digits using the table of digits 1-6 corresponding to different sets of letters, removing any duplicate digits that occur back to back given a string, replace the first digit with the corresponding first letter capitalized, add zeros until the code has one letter and 3 digits, and truncate every digit after the 4th one. By breaking the function into these smaller tasks that are more bite sized it will be easier to tell what is going wrong with my soundex function when I implement it versus having a huge pile of code and not knowing which part I need to debug.
+
+
+Q12. Think about one or more examples of a class of names that the Soundex system might not work well for. Explain what this class of names is and why the system might incorrectly group them or mis-categorize one of the names.
+A12. 
+
+A class of names that the Soundex system might not work well for are chinese names as they are constructed using Chinese characters that are translated into ASCII. Soundex might not have representations for the sounds of last names like Li, Law, Liu, Lou, Zhao, Huang, and Zhou simply because they all come from some dialect of Chinese that isn't represented in English speech. An example is my last name Law that directly turns into L000 meaning a better algorithm may be needed to represent these surnames as America is built on immigrants from all different parts of the world.
+
+Q13. Suppose you are a software engineer working for the U.S. government. You have been tasked with implementing a system that collects names as part of the Census survey and analyzes these names using a phonetic algorithm. Your boss suggests using Soundex and notes that the algorithm is only expected to work for ASCII-encoded strings, since supporting Unicode would require extra work and time. What would your response be and why? What representational harms might result from building a system that exclusively uses Soundex and/or ASCII?
+A13. 
+
+My response would be to explain the fact that America is built on immigrants and ASCII is based on English pronunciation of words which doesn't properly represent the large immigrant communities in America with surnames that aren't based on English pronunciation. A four letter format may be insufficient for capturing this and may generate false positives and negatives for a variety of different names making this model not effective. This may cause certain surnames to be group when they do not share the same sound qualities and some surnames to be separate while sounding the same.
