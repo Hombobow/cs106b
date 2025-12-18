@@ -1,0 +1,89 @@
+Before submitting this file, make sure that there are no more TODO
+placeholders remaining in the file (and remove this comment too).
+
+Warmup
+------
+
+Q1. The display of the Stack in the debugger uses the labels `top` and `bottom` to mark the two ends of the stack. How are the contents labeled when the Stack contains only one element?
+A1. 
+
+The contents of the stack in my case 1 was just labeled top and there was no bottom label.
+
+Q2. For which type of inputs does the function go into an infinite loop?
+A2. 
+
+The function goes into an infinite loop when there is only negative numbers in the function.
+
+Q3. Show your edited code for `duplicateNegatives` that fixes the problem with the infinite loop.
+A3. 
+
+void duplicateNegatives(Queue<int>& q) {
+    int size = q.size();
+    for (int i = 0; i < size; i++) {
+        int val = q.dequeue();
+        q.enqueue(val);
+        if (val < 0) {
+            q.enqueue(val);   // double up on negative numbers
+        }
+    }
+}
+
+Q4. What is the better fix to `sumStack` that corrects the bug?
+A4. 
+
+The better fix to sumStack is setting the initial total to 0 for example (int total = 0;) instead of (int total = s.pop();).
+
+Maze
+----
+Q5. After you have written your test cases, describe your testing strategy to confirm that your `validatePath` operates as intended. How confident are you that it works correctly in all cases?
+A5. 
+
+I tested all the different cases that weren't already in the provided tests such as when there were empty paths, loops, and paths that walked through walls to validate all the criterion. I also checked on 1x1 grids to make sure all the calculations still worked when the beginning was equal the end. I am super confident that it works correctly in all cases.
+
+Q6. While BFS and DFS are equivalently capable in terms of finding a solution, the two can differ in which solution is found (when there are multiple) and how quickly a solution is discovered. An advantage of BFS is that it always finds the shortest possible solution, explain why this is guaranteed for BFS and not for DFS. An advantage of DFS is that for some mazes it will find a solution more quickly than BFS, explain how this could be so.
+A6. 
+
+BFS always find the shortest solutions because it traverses the solutions depth by depth which means that when it finds the solution it will always be the solution on the lowest depth of search while for DFS it searches all the way through for each branch first which results in a solution that is not neccessarily in the shortest branch.
+DFS can solve some mazes much more quickly cause some solutions are just sitting in the first branch or close by to the first branch while BFS has to search through every branch depth by depth making it less likely to find the solution very quickly for much larger mazes as there is a minimum number of moves to get to an exit.
+
+Q7. Most students are sold on the benefit of the fancy features provided by `Vector`, `Grid`, and `Set` but the ADT skeptics may question the value of `Stack` and `Queue` ADTs, seeing them as nothing more than a restricted `Vector`. Make your best argument to convince them of the benefits these ADTS have over `Vector`.
+A7.
+
+Stacks and Queues allow for much faster traversal of the the data type for certain types of problems where you are not concerned about accessing every element and just want to brute force a process as fast as possible. The restrictions actually allow for way faster runtimes
+and any improvement in efficency scales heavily with the increase of the data set for example many of the functions that a stack uses have a time complexity of O(1) which is as fast as it gets.
+
+Search Engine
+-------------
+Q8. Sketch the contents of the inverted index built from the `res/tiny.txt` database file.
+A8.
+
+{ "milk": {"www.shoppinglist.com"},
+"fish": {"www.shoppinglist.com", "www.dr.seuss.net"},
+"bread": {"www.shoppinglist.com"},
+"51bmms": {"www.shoppinglist.com"},
+"red": {"www.rainbow.org", "www.dr.seuss.net"},
+"green": {"www.rainbow.org"},
+"blue": {"www.rainbow.org", "www.dr.seuss.net"},
+"one": {"www.dr.seuss.net"},
+"two": {"www.dr.seuss.net"},
+"10": {"www.dr.seuss.net"},
+"I": {"www.dr.seuss.net"},
+"eat": {"www.dr.seuss.net"}};
+
+
+Beyond Algorithmic Analysis
+---------------------------
+Q9. In a short paragraph, describe a real or plausible scenario not previously presented in lecture in which using techniques like benchmarking or counting "write" steps to improve the performance of an algorithm might benefit Earth's environment. Include your thoughts on how a software engineer working on this piece of code might identify such potential benefits and take them into consideration when designing the code.
+A9. 
+
+I know the large language models like chat GPT and search engine receives probably billions of queries every day which burn through processing power insanely fast and these processors pick up lots of heat during the runtime. This is a big factor in hurting Earth's environment as they use cool water to cool down these processors resulting in both large proportion of energy waste from the cooling process of the water. By benchmarking and counting to find inefficiencies to the code there can be better models. Even a slight increase in efficiency for these programs you scale the energy waste down by the billions. 
+
+Q10. According to the contract that IBM struck with the state of Indiana, the criteria for optimization were improving efficiency of the overall welfare system and reducing fraud. Criteria for reducing wait times and wrongful denials were not included.  However, wrongfully denying benefits has a huge negative  impact on the citizens who rely on the system.  If criteria like minimizing wrongful denials were not included in the contract, should engineers have included them in their optimization algorithm?  Why or why not?
+A10. 
+
+I feel as if the engineers should have included these functionality in their programs as a program is only as good as it results and there is a moral obligation as a human being. They are essentially contributing to more energy waste and cost too than if the program had not been instated as now there are people who are going to have to reapply multiple times because of these wrongful denials which essentially increase costs. I also feel as if finding ways to save on costs by creating a less functional system is not really finding a solution to the problem Indiana paid IBM $1 billion for.
+
+Q11. Imagine that after completing CS106B you are hired at IBM as an engineer working on this system. How might you have approached designing and setting the goals of this system?  How might you apply algorithmic analysis tools to build a system that achieved the desired goals? Could you do so in a way that avoids the severe negative impacts on users of the system that are outlined in the case study?
+A11. 
+
+I feel as if I would take the approach of first finding out how forms are most easily processed and figuring out a streamlined method for submitting files in a way where they can't be lost and then keeping it consistent to minimize wrongful denials and make sure cases are finished before moving on. I would then find the best way to quickly process files that are sent in for example using a queue to ensure fairness and processing speed and looking over the key systems functionalities to look for places where the process can go smoother or run faster. To ensure there are no negative impacts on the users I would also create a system that allows users to create profiles and keep track of the progress of applications for eligibility requirements and allow them to send in anything missing rather than a wrongful denial or leaving them on hold until a time limit is up.

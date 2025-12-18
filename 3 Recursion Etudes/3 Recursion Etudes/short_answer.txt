@@ -1,0 +1,162 @@
+Warmup
+------
+
+Q1. Looking at a call stack listing in a debugger, what is the indication that the program being debugged uses recursion?
+A1.
+
+I can tell that the call stack is listing a debugger because of the number of times that the same function was called which indicates a function is calling itself until it reaches the base case.
+
+Q2. Subtract the innermost level number from the outermost to get the maximum count of stack frames that fit in the capacity of the call stack. How many stack frames fit in your system's call stack?
+A2.
+
+16693 - 1 = 16692 is the maximum count of stack frames that fit in the capacity of my call stack.
+
+Q3. Describe how the symptoms of infinite recursion differ from the symptoms of an infinite loop.
+A3.
+
+Infinite recursion is when a base case is never met and a function is called over and over again filling up a call stack while an infinite loop is when you infinitely iterate through a section of code.
+
+Q4. In place of selecting values over a defined range, an alternate approach would be to randomly select values for base and exponent. Such a test case would test something different each time you ran it. This test approach is part of a larger approach known as "fuzz" testing. What do you see as possible benefit and downside of randomness being used in a test case?
+A4.
+
+A benefit of fuzz testing is that it could cover variable test cases that you may not have forseen. A downside is that you could miss a edge case if you are unlucky.
+
+Q5. What was the number of iterations of `recPower` did it take on your system to amount to a quarter second? Copy/paste the time results of the two time trial sequences running on that number of iterations.
+A5.
+
+It took 37,000,000 iterations for recPower to amount to a quarter second.
+
+Trial 1:
+Correct (PROVIDED_TEST, line 92) Time trial recPower, double base, keep exp constant
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =        4) completed in    0.271 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =        8) completed in    0.272 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =       16) completed in    0.263 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =       32) completed in    0.255 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =       64) completed in    0.256 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =      128) completed in    0.255 secs
+
+Correct (PROVIDED_TEST, line 98) Time trial recPower, keep base constant, double exp
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =        4) completed in    0.255 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =        8) completed in    0.345 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =       16) completed in    0.460 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =       32) completed in    0.564 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =       64) completed in    0.759 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =      128) completed in    0.889 secs
+
+Trial 2:
+Correct (PROVIDED_TEST, line 92) Time trial recPower, double base, keep exp constant
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =        4) completed in    0.271 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =        8) completed in    0.272 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =       16) completed in    0.263 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =       32) completed in    0.255 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =       64) completed in    0.256 secs
+    Line 94 TIME_OPERATION manyPowerCalls(size, 5) (size =      128) completed in    0.255 secs
+
+Correct (PROVIDED_TEST, line 98) Time trial recPower, keep base constant, double exp
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =        4) completed in    0.255 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =        8) completed in    0.345 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =       16) completed in    0.460 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =       32) completed in    0.564 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =       64) completed in    0.759 secs
+    Line 100 TIME_OPERATION manyPowerCalls(5, size) (size =      128) completed in    0.889 secs
+
+Q6. Explain how the recursive structure of `recPower` results in a Big-O runtime of `O(lgN)` relative to the size of its `exp` argument.
+A6.
+
+The code represent that each time you double the exp you have to iterate through the recursive case one more time as each time the recursion runs you truncate half the exponent and pass it into the next case.
+This halving of the problem is O(log(n)) run time.
+
+double recPower(double base, int exp) {
+    if (exp == 0) {
+        return 1;
+    } else {
+        double half = recPower(base, exp/2);
+        if (exp % 2 == 0) {
+            return half * half;
+        } else {
+            return half * half * base;
+        }
+    }
+}
+
+Balanced
+--------
+
+Q7. Compare your recursive solution to the iterative approach used for the Check Balance problem in [Section 1][section1]. Which version do you find easier to read and understand? In which version did you find it easier to confirm the correct behavior?
+A7.
+
+The recursive function is way easier to understand as there are fewer lines of code and the recursive one doesn't have so much information that is returned. I also feel like following what is happening with so many loops confuses me.
+
+Merge
+-----
+
+Q8. Give a rough estimate of the maximum length sequence that could be successfully merged on your system assuming a recursive implementation of `binaryMerge`.
+A8.
+
+A rough estimate for the maximum length of a sequence that could be sucessfully merged on my system assuming a recursive implementation would be log2(n) meaning the
+max length sequence is log2(n) = 16692 which gives me 2^16692 as a rough estimate for the length of the sequence that I could run.
+
+
+Q9. What would be the observed behavior if attempting to recursively merge a sequence larger than that maximum?
+A9.
+
+The computer would call a stack overflow error which crashes the running program.
+
+Q10. Include the data from your execution timing and explain how it supports your Big O prediction for `binaryMerge`.
+A10.
+
+Correct (STUDENT_TEST, line 215) Time operation on binaryMerge
+    Line 218 TIME_OPERATION manybinaryMerges(aQ, bQ) (size =        2) completed in    1.037 secs
+    Line 222 TIME_OPERATION manybinaryMerges(aQ, bQ) (size =        4) completed in    1.217 secs
+    Line 226 TIME_OPERATION manybinaryMerges(aQ, bQ) (size =        8) completed in    1.618 secs
+    Line 230 TIME_OPERATION manybinaryMerges(aQ, bQ) (size =       16) completed in    2.280 secs
+
+This supports my prediction that binaryMerge is ~big O(log(n)) because plugging the points in desmos and grabbing a line of best fit
+with ~log(n) I can see that it is logarithmic.
+
+Q11. Include the data from your execution timing and explain how it supports your Big O prediction for `naiveMultiMerge`.
+A11.
+
+Correct (STUDENT_TEST, line 259) Time trial naiveMultiMerge, double n, keep k constant
+    Line 268 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =        5) completed in    0.516 secs
+    Line 268 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =       10) completed in    1.305 secs
+    Line 268 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =       20) completed in    2.572 secs
+    Line 268 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =       40) completed in    4.900 secs
+    Line 268 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =       80) completed in    8.920 secs
+
+Correct (STUDENT_TEST, line 272) Time trial naiveMultiMerge, keep n constant, increase k by 1
+    Line 286 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =        1) completed in    0.389 secs
+    Line 286 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =        2) completed in    0.702 secs
+    Line 286 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =        3) completed in    0.985 secs
+    Line 286 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =        4) completed in    1.277 secs
+    Line 286 TIME_OPERATION manyNaiveMultiMerge(qVector, 50000) (size =        5) completed in    1.533 secs
+
+This supports my hypothesis that naiveMultiMerge is ~O(nk) as doubling n causes the time to double while increasing k by 1 each time causes the time to roughly increase by a linear amount. equation (time ~ nk)
+
+Q12. Include the data from your execution timing and explain how it demonstrates `O(n log k)` runtime for `recMultiMerge`.
+A12.
+
+Correct (STUDENT_TEST, line 317) Time trial recMultiMerge, double n, keep k constant
+    Line 326 TIME_OPERATION manyRecMultiMerges(qVector, 50000) (size =        5) completed in    0.773 secs
+    Line 326 TIME_OPERATION manyRecMultiMerges(qVector, 50000) (size =       10) completed in    2.365 secs
+    Line 326 TIME_OPERATION manyRecMultiMerges(qVector, 50000) (size =       20) completed in    4.138 secs
+    Line 326 TIME_OPERATION manyRecMultiMerges(qVector, 50000) (size =       40) completed in    7.469 secs
+    Line 326 TIME_OPERATION manyRecMultiMerges(qVector, 50000) (size =       80) completed in   11.442 secs
+
+Correct (STUDENT_TEST, line 330) Time trial recMultiMerge, keep n constant, quadruple k
+    Line 344 TIME_OPERATION manyRecMultiMerges(qVector, 10) (size =        1) completed in    0.024 secs
+    Line 344 TIME_OPERATION manyRecMultiMerges(qVector, 10) (size =        4) completed in    0.505 secs
+    Line 344 TIME_OPERATION manyRecMultiMerges(qVector, 10) (size =       16) completed in    0.996 secs
+    Line 344 TIME_OPERATION manyRecMultiMerges(qVector, 10) (size =       64) completed in    1.493 secs
+    Line 344 TIME_OPERATION manyRecMultiMerges(qVector, 10) (size =      256) completed in    1.994 secs
+
+This data demonstrates O(n log k) as it shows that when you double n you double the amount time the program takes to run with some noise indicating O(logn) behavior which is the case when k is constant.
+However, when you quadruple k the runtime for recMultiMerge grows slowly indicating O (log(k)) growth behavior which is exactly what we expect.
+
+Q13. You run `recMultiMerge` on a sequence of size 1 million and see that it completes just fine. Explain why this is not running afoul of the call stack capacity limitation.  _Hint_: How many stack frames (levels) are expected to be on the call stack at the deepest point in the recursion in `recMultiMerge`?
+A13.
+
+recMultiMerge on a sequence of size 1 million does not cause an error because it realistically only has to call the stack only log2(1000000) times which is honestly just roughly 19 times.
+
+Correct (STUDENT_TEST, line 351) recMultiMerge on a sequence of size 1 million
+    Line 365 TIME_OPERATION recMultiMerge(qVector) (size =  1000000) completed in   26.580 secs

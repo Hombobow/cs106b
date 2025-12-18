@@ -1,0 +1,71 @@
+Before submitting this file, make sure that there are no more TODO
+placeholders remaining in the file (and remove this comment too).
+
+Warmup
+------
+Q1. What is the value of `totalMoves` after stepping over the call to `moveTower` in `hanoiAnimation`?
+A1.
+
+After stepping over the call to moveTower the value of totalMoves was 15.
+
+Q2. What is the value of the `totalMoves` variable after stepping over the first recursive sub-call? (In other words, within `moveTower` just after stepping over the first recursive sub-call to `moveTower` inside the `else` statement.)
+A2.
+
+After stepping over the first recursive sub-call to moveTower the value of totalMoves was 7.
+
+Q3. After breaking at the base case of `moveTower` and then choosing Step Out, where do you end up? (What function are you in, and at what line number?) What is the value of the `totalMoves` variable at this point?
+A3.
+
+After breaking at the base case of moveTower and choosing Step Out I end up in the moveTower function, line 67, and the value of totalMoves is 1.
+
+Q4. What is the smallest possible input that you used to trigger the bug in the program?
+A4.
+
+The smallest possible input to trigger the bugger is any single non-zero integer.
+
+Q5. Identify the one-character error in the code and explain why that one-character bug causes the function to return the output you see when running on the minimal input you listed above. You should be able to specifically account for how the error causes the result to change from “completely correct” to “terribly wrong.”
+A5.
+
+The one-character error in the code is = sign because it changes sumSoFar for the next iteration that we are calling where the intended effect is to not add value of v at index to the second recursive call, however the += causes it to only go down one path which changes the solution from completely correct where you explore the breathe of options to only explore one depth.
+
+Voting
+------
+Q13: Include the data from your execution timing and explain how is supports your Big O prediction for computePowerIndex.
+A13: 
+
+I predicted that computePowerIndexes runs in O(N*2^N) because computeCriticalVotes is on the order of 2^N where N is the blocks.size() and computePowerIndexes calls computeCriticalVotes in an O(N) loop.
+
+
+Correct (STUDENT_TEST, line 154) testing the time for 5 different sizes
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 15) (size =        3) completed in    0.000 secs
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 15) (size =        4) completed in    0.001 secs
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 15) (size =        5) completed in    0.004 secs
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 15) (size =        6) completed in    0.363 secs
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 15) (size =        7) completed in   56.933 secs
+
+My data shows that the time complexity of O(N*2^N) is representative because the time increases exponentially as the number of operations increases.
+
+Q14: Use the timing and Big O to predict how long it would take to compute the power index for the 51 voting blocks in the US electoral system.
+A14: 
+
+Using the non-scaled up data: 
+
+Correct (STUDENT_TEST, line 154) testing the time for 5 different sizes
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 1) (size =        3) completed in    0.000 secs
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 1) (size =        4) completed in    0.000 secs
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 1) (size =        5) completed in    0.001 secs
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 1) (size =        6) completed in    0.023 secs
+    Line 159 TIME_OPERATION scaleTimeByN(blocks, 1) (size =        7) completed in    4.016 secs
+
+I would predict that to compute the power index for a size of 51 would be roughly 16,260,948 days
+
+My work is shown below:
+
+N*2^N = X seconds at N = 51
+N*2^N = 4 seconds at N = 7 
+cross multiplying we get:
+
+51*2^51 * (4/60/60/24/365) days = 7*2^7 * X
+X = (51*2^51 / 7*2^7) * (4/60/60/24/365) = 16,260,948 days
+
+

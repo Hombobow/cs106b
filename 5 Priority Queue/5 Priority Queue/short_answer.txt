@@ -1,0 +1,176 @@
+Warmup
+-------
+Q1. How do the values of the member variables of `allBalls[0]` change from iteration to iteration? Specifically, what happens to the values of `_id`, `_x`, and `_y`?
+A1.
+
+The value of _id doesn't change from iteration to iteration; however, the _x value increases by _vx and the value of _y increases by _vy.
+
+Q2. How do the values of the member variables of the stuck ball change from iteration to iteration? Contrast this to your answer to the previous question.
+A2.
+
+The values of the member variables of the stuck ball is stuck in a constant loop from iteration to iteration. While _id still stays the same throughout each iteration the
+_vx and _vy swap signs (are multiplied by -1) during every iteration which is then added to the values _x and _y causing both of them to alternate.
+
+Q3. After forcing the stuck ball to position (0, 0), does the ball move normally from there or does it stay stuck?
+A3.
+
+After forcing the stuck ball to position (0, 0), the ball behaved normally from there. It only got stuck again when I would reach an edge.
+
+Q4. On your system, what is the observed consequence of these memory errors:
+- access an index outside the allocated array bounds?
+- delete same memory twice?
+- access memory after it has been deleted?
+A4.
+
+1. When I tried to access an index outside of the allocated array bounds my program was actually able to do it; however, the EXPECT_EQUAL(taskList[974].label, "banana") statement only returned true when
+the index we accessed had an open memory location that initialized our label to "".
+
+2. Trying to delete the same memory twice crashed my program. It gave me the error message when I ran it normally, and in the debugger the program just stopped.
+
+3. Trying to access the memory after it has been deleted still works; however, the labels that were originally there get cleared so running EXPECT_EQUAL(taskList[0].label, "sleep") would return false.
+
+PQArray
+-------
+Q5. There are extensive comments in both the interface (`pqarray.h`) and implementation (`pqarray.cpp`). Explain how and why the comments in the interface differ from those in the implementation. Consider both the content and audience for the documentation.
+A5.
+
+The comments in the interface (`pqarray.h`) is much more simple and more informative about the functionality because the it is intended to aid the user who doesn't need to understand the intricacies of how the function works while the
+comments in the implementation (`pqarray.cpp`) is much more robust and aim for clarity of how to implement the function. For example in the comments of the constructor for the interface all the user needs to know is that it
+creates a new empty priority queue while in the implementation file for the programmer they need to know that this is where the member variables are initialized including some starting values of private member variables.
+
+Q6. The class declares member variables `_numAllocated` and `_numFilled`. What is the difference between these two counts and why are both needed?
+A6.
+
+`_numAllocated` is the member variable that explains how many slots of memory (in terms of number of DataPoints) were allocated for our particular priority queue while `_numFilled` is used to check how many of those slots are currently being used.
+Both are needed because you need to both define a max storage capacity of the queue and also find exactly how much of it is currently being used.
+
+Q7. Although code within the body of a member function can directly access the object's member variables, the implementer may instead choose to call public member functions to get information about the object. For example, note how the operations `isEmpty()` and `peek()` intentionally call `size()` instead of using `_numFilled` or how `dequeue()` calls `peek()` to retrieve the frontmost element. Why might be this be considered a better design?
+A7.
+
+It might be because we don't want to risk accidentally altering the private variables that we are working with. I think that it may also be a better design because using calls to these functions keeps the public functions seperate from our private variables and function allowing for a more robust
+system of accessing information in the private sections. Functions like size may also have future safety checks which our other functions not directly accessing `_numFilled` can benefit from.
+
+Q8. Give the results from your time trials and explain how they support your prediction for the Big-O runtimes of `enqueue` and `dequeue`.
+A8.
+
+I predict that the Big-O runtime of enqueue is O(N) while dequeue is O(1).
+
+Line 214 TIME_OPERATION fillQueue(pq, n) (size =    20000) completed in    0.353 secs
+Line 214 TIME_OPERATION fillQueue(pq, n) (size =    40000) completed in    1.468 secs
+Line 214 TIME_OPERATION fillQueue(pq, n) (size =    80000) completed in    5.728 secs
+Line 214 TIME_OPERATION fillQueue(pq, n) (size =   160000) completed in   22.722 secs
+
+The time trials explains the runtimes of enqueue because as shown in the fillQueue calls each time the n value (number of elements we are enqueuing)
+is doubled we quadruple our runtime which makes sense because the number of times we run the function also doubles. So if the runtime is doubled but we also double
+the amount of times we run the program it is 4x the amount of time.
+
+Line 220 TIME_OPERATION emptyQueue(pq, n) (size =    40000) completed in    0.000 secs
+Line 220 TIME_OPERATION emptyQueue(pq, n) (size =    80000) completed in    0.000 secs
+Line 220 TIME_OPERATION emptyQueue(pq, n) (size =   160000) completed in    0.002 secs
+Line 220 TIME_OPERATION emptyQueue(pq, n) (size =   320000) completed in    0.003 secs
+
+The time trials explains the runtimes of dequeue because as shown in the fillQueue calls each time the n value the runtime roughly doubles which is hard to reflect because dequeue is O(1) which is super quick.
+As we double the number of times we call dequeue we should get double the runtime.
+
+PQ Client
+---------
+Q9. Based on the Big O of `enqueue`/`dequeue`, what do you expect for the Big O of `pqSort` if using a `PQArray`? Run some timing trials to confirm your prediction, and include that data in your answer.
+A9.
+
+Based on the Big O of enqueue and dequeue I expect the Big O of `pqSort` is O(N^2) where N is the number of elements in the PQArray because of the loop through all the elements (O(N)) where you enqueue each element (O(N)).
+
+Line 80 TIME_OPERATION pqSort(v) (size =    10000) completed in    0.090 secs
+Line 80 TIME_OPERATION pqSort(v) (size =    20000) completed in    0.335 secs
+Line 80 TIME_OPERATION pqSort(v) (size =    40000) completed in    1.370 secs
+Line 80 TIME_OPERATION pqSort(v) (size =    80000) completed in    5.633 secs
+
+This is a time trail with N doubling each time. It shows that when I double the size of the array the time quadruples which reflects a time complexity of O(N^2).
+
+Q10. Based on the Big O of `enqueue`/`dequeue`, what do you expect for the Big O of `topK` in terms of `k` and `n` if using a `PQArray`? Run some timing trials to confirm your prediction, and include that data in your answer.
+A10.
+
+I predict that the Big O runtime of 'topK' is O(nk) because of the full runtime notation is O(n(k+1) + k) however this can be abstracted to O(n(k) + k) which can be astracted to O(nk).
+I was able to determine the runtime of topK using enqueue having O(k) runtime and dequeue having O(1) runtime.
+
+
+Correct (PROVIDED_TEST, line 113) time trails for topK changing n
+    Line 120 TIME_OPERATION topK(stream, k) (size =  4000000) completed in    1.988 secs
+    Line 120 TIME_OPERATION topK(stream, k) (size =  8000000) completed in    3.875 secs
+    Line 120 TIME_OPERATION topK(stream, k) (size = 16000000) completed in    8.086 secs
+    Line 120 TIME_OPERATION topK(stream, k) (size = 32000000) completed in   15.561 secs
+
+This reflects the Big O runtime of 'topK' while doubling n each time. This is representative of O(nk) because doubling n doubles the runtime.
+
+Correct (PROVIDED_TEST, line 124) time trails for topK changing k
+    Line 131 TIME_OPERATION topK(stream, k) (size =     5000) completed in    0.730 secs
+    Line 131 TIME_OPERATION topK(stream, k) (size =    10000) completed in    1.383 secs
+    Line 131 TIME_OPERATION topK(stream, k) (size =    20000) completed in    3.499 secs
+    Line 131 TIME_OPERATION topK(stream, k) (size =    40000) completed in   7.146 secs
+
+This reflects the Big O runtime of 'topK' while doubling k each time. This is representative of O(nk) because doubling k roughly doubles the runtime.
+
+PQHeap
+------
+Q11. Start with an empty binary heap and enqueue the nine `DataPoint`s in the order shown below and show the result. You only need to show the final heap, not intermediate steps. Draw the heap as tree-like diagram with root element on top, its two children below, and so on. Yes, we know that we're asking you to draw pictures in a text file (we love the [AsciiFlow](http://asciiflow.com/) tool for "drawing" in text).
+A11.
+
+                ┌─────┐
+                │ T,1 │
+                └──┬──┘
+              ┌────┴────┐
+           ┌──▼──┐   ┌──▼──┐
+           │ B,3 │   │ G,2 │
+           └──┬──┘   └──┬──┘
+       ┌──────┤         ├──────┐
+    ┌──▼──┐┌──▼──┐   ┌──▼──┐┌──▼──┐
+    │ S,6 ││ A,5 │   │ V,9 ││ R,4 │
+    └──┬──┘└─────┘   └─────┘└─────┘
+    ┌──┴───┐
+┌───▼─┐  ┌─▼───┐
+│ O,8 │  │ K,7 │
+└─────┘  └─────┘
+
+Q12. Make two calls to `dequeue` on the above binary heap and draw the updated result.
+A12.
+
+                ┌─────┐
+                │ B,3 │
+                └──┬──┘
+              ┌────┴────┐
+           ┌──▼──┐   ┌──▼──┐
+           │ A,5 │   │ R,4 │
+           └──┬──┘   └──┬──┘
+       ┌──────┤         ├──────┐
+    ┌──▼──┐┌──▼──┐   ┌──▼──┐┌──▼──┐
+    │ S,6 ││ A,5 │   │ V,9 ││ K,7 │
+    └─────┘└─────┘   └─────┘└─────┘
+
+Q13. Draw the array representation of the binary heap above. Label each element with its array index.
+A13.
+
+┌───┐┌───┐┌───┐┌───┐┌───┐┌───┐┌───┐
+│B,3││A,5││R,4││S,6││O,8││V,9││K,7│
+└───┘└───┘└───┘└───┘└───┘└───┘└───┘
+┌───┐┌───┐┌───┐┌───┐┌───┐┌───┐┌───┐
+│ 0 ││ 1 ││ 2 ││ 3 ││ 4 ││ 5 ││ 6 │
+└───┘└───┘└───┘└───┘└───┘└───┘└───┘
+
+Q14. Re-run the timing trials on `pqclient.cpp` and provide your results that confirm that `pqSort` runs in time O(NlogN) and `topK` in O(NlogK).
+A14.
+
+Correct (STUDENT_TEST, line 135) time trail for the pqSort function
+    Line 139 TIME_OPERATION pqSort(v) (size =  1000000) completed in    1.037 secs
+    Line 139 TIME_OPERATION pqSort(v) (size =  2000000) completed in    2.576 secs
+    Line 139 TIME_OPERATION pqSort(v) (size =  4000000) completed in    6.004 secs
+    Line 139 TIME_OPERATION pqSort(v) (size =  8000000) completed in   11.640 secs
+
+This time trail for pqSort reflects O(NlogN) as doubling the array size (N) less than quadruples the time taken to run the program reflecting a change from the
+O(N^2) to O(NlogN) function using the heap implementation of the priority queue as opposed to the array.
+
+Correct (PROVIDED_TEST, line 145) time trails for topK changing k
+    Line 152 TIME_OPERATION topK(stream, k) (size =    50000) completed in   13.688 secs
+    Line 152 TIME_OPERATION topK(stream, k) (size =   100000) completed in   14.095 secs
+    Line 152 TIME_OPERATION topK(stream, k) (size =   200000) completed in   14.548 secs
+    Line 152 TIME_OPERATION topK(stream, k) (size =   400000) completed in   15.503 secs
+
+This time trail for pqSort reflects O(NlogK) as doubling the input value (K) barely changes the time complexity which is true for logK function as N stays constant.
